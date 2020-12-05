@@ -3,7 +3,7 @@ project(TinyServer)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(TinyServer src/main.cpp src/Server.h src/Server.cpp)
+add_executable(TinyServer src/main.cpp src/Server.h src/Server.cpp src/util.cpp)
 
 
 find_package(Threads REQUIRED)
