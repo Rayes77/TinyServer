@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <errno.h>
+#include <cstdlib>
+
 char *sock_ntop(const sockaddr_storage* sa,socklen_t len){
     char port[8];
     char addrtemp[128];
@@ -150,4 +152,12 @@ size_t rio_readnb(rio_t *rio,char *buf,size_t nbytes){
         }
     }
     return nbytes - nleft;
+}
+
+void Listen(int fd,int backlog){
+    char *ptr;
+
+    if ((ptr = getenv("LISTEN")) != NULL)
+        backlog = atoi(ptr);
+    listen(fd,backlog);
 }
