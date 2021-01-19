@@ -1,5 +1,7 @@
 #include <iostream>
+#include "server/server.h"
 
 int main(){
-    std::cout<<"Hello World!"<<std::endl;
+    server webSever;
+    webSever.start();
 }
