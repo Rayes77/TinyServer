@@ -8,7 +8,8 @@
 
 #include "epoller.h"
 
-epoller::epoller(int timeout,int maxevent): timeOut(timeout), maxEvent(maxevent) {
+epoller::epoller(int timeout,int maxevent): timeOut(timeout), maxEvent(maxevent)
+                                                    ,m_resultEvents(maxevent) {
     epollFd = epoll_create(1024);
 }
 
@@ -33,6 +34,13 @@ bool epoller::delFd(int fd) {
     return 0 == epoll_ctl(epollFd,EPOLL_CTL_DEL,fd,NULL);
 }
 
-int epoller::wait(int, u_int32_t) {
-    return epoll_wait(epollFd,&eventsResult[0],maxEvent,timeOut);
+int epoller::wait() {
+    return epoll_wait(epollFd,m_resultEvents.data(),maxEvent,timeOut);
+}
+
+mEpollEvent epoller::getResultEvent(int index) {
+    mEpollEvent events;
+    events.m_fd = m_resultEvents[index].data.fd;
+    events.m_event = m_resultEvents[index].events;
+    return events;
 }
