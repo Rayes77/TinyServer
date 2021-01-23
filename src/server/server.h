@@ -17,9 +17,12 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include "../eventloop/epoller.h"
+#include "../threadpool/threadpool.h"
+
 class server {
 private:
     std::shared_ptr<epoller> m_epoll;
+    std::shared_ptr<threadpool> m_threadPoll;
 
     int m_listenFd;         //listen fd
     int m_port;             //port
@@ -32,7 +35,8 @@ private:
     //internal utils
     bool getListenFd();
 public:
-    server(int port_,int timeout = -1,int maxevent = 1024);
+    server(int port_,int threadNum = std::thread::hardware_concurrency(),
+           int timeout = -1,int maxevent = 1024);
     void start();
 };
 

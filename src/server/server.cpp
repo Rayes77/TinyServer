@@ -39,13 +39,15 @@ bool server::getListenFd() {
 
 // TODO:read conf file.
 // TODO:init event pool.
-server::server(int port_,int timeout ,int maxevent):m_port(port_)
-                ,m_maxTimeout(timeout),m_maxEvent(maxevent) {
+server::server(int port_,int threadNum,int timeout ,int maxevent):m_port(port_)
+                ,m_maxTimeout(timeout),m_maxEvent(maxevent),m_maxThreadNum(threadNum) {
     if (!getListenFd()){
         std::cout<<"getListenFd error"<<std::endl;
         std::terminate();
     }
     m_epoll = std::make_shared<epoller>(m_maxTimeout,m_maxEvent);
+    m_threadPoll = std::make_shared<threadpool>(m_maxThreadNum);
+
 }
 
 void server::start() {
