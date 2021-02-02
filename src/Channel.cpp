@@ -15,7 +15,7 @@ Channel::Channel(EventLoop* ptr,int fd):
                  fd_(fd),
                  event_(-1),
                  revent_(-1),
-                 index_(-1){//do something.
+                 isInEpoll_(false){//do something.
 
 }
 

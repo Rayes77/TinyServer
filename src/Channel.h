@@ -25,28 +25,10 @@ private:
     callback errorCallBack_;
 
     int fd_;
-    int index_;
+    bool isInEpoll_;
     int event_;
     int revent_;
-
     EventLoop* eventLoop_;
-
-    void setReadCallBack(callback cb) {
-        readCallBack_ = cb;
-    }
-
-    void setWriteCallBack(callback cb) {
-        writeCallBack_ = cb;
-    }
-
-    void setCloseCallBack(callback cb) {
-        closeCallBack_ = cb;
-    }
-
-    void enableReading() {
-        event_ |= EPOLLIN;
-        update();
-    }
 
     void update();
 
@@ -57,7 +39,24 @@ public:
 
     void handleEvent();
     void setRevent(int rev){revent_ = rev;}
-    int getIndex(){return index_;}
+    bool isInEpoll(){return isInEpoll_;}
+    int getEvent(){return event_;}
+    int getFd(){return fd_;}
+
+    void setReadCallBack(callback cb) {
+        readCallBack_ = cb;
+    }
+    void setWriteCallBack(callback cb) {
+        writeCallBack_ = cb;
+    }
+    void setCloseCallBack(callback cb) {
+        closeCallBack_ = cb;
+    }
+    void setIsInEpoll(bool b){isInEpoll_ = b;}
+    void enableReading() {
+        event_ |= EPOLLIN;
+        update();
+    }
 };
 
 

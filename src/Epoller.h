@@ -17,9 +17,13 @@
 class Channel;
 class Epoller {
 private:
-    std::vector<struct epoll_event> fds_;
-    std::map<int,Channel*> channelMap_;
+    std::vector<struct epoll_event> events_;
+    std::map<int,Channel*> channelMap_;//map fd to channel.
 
+    int epollFd_;
+
+    void update(int ctl,Channel* channel);
+    void fillActiveChannels(int num,std::vector<Channel*>& activeChannel);
 public:
     int wait(std::vector<Channel*>&);
 
