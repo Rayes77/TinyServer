@@ -13,20 +13,26 @@
 #include <thread>
 #include <atomic>
 #include <iostream>
+#include <memory>
 #include <assert.h>
 #include "Channel.h"
+
+class Poller;
 
 class EventLoop {
 private:
     std::thread::id thisThreadId;
     std::atomic<bool> looping_;
     std::atomic<bool> quit_;
+    std::unique_ptr<Poller> poller_;
+    std::vector<Channel*> activeChannels_;
 
     void abortNotInLoopThreed();
 public:
     EventLoop();
     ~EventLoop();
     void loop();
+    void quit(){quit_ = true;}
     void updateChannel(Channel* channel);
 
     static EventLoop* getEventLoopOfCurrentThread();

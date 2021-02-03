@@ -40,9 +40,12 @@ public:
 
     void handleEvent();
 
+    int fd()const{return fd_;}
     int index() const {return index_;}
     void setIndex(int idx){index_ = idx;}
     void setRevent(int rev){revent_ = rev;}
+    int events()const{return event_;}
+    bool isNoneEvent()const{return event_ == kNoneEvent;}
 
     EventLoop* ownerLoop(){return loop_;}
 

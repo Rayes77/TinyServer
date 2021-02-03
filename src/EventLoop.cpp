@@ -8,7 +8,7 @@
 
 
 #include "EventLoop.h"
-
+#include "Poller.h"
 thread_local EventLoop* loopInThisThread;
 
 void EventLoop::abortNotInLoopThreed() {
@@ -18,7 +18,8 @@ void EventLoop::abortNotInLoopThreed() {
 EventLoop::EventLoop():
             thisThreadId(std::this_thread::get_id()),
             looping_(false),
-            quit_(false){
+            quit_(false),
+            poller_(std::make_unique<Poller>(this)){
     if (loopInThisThread){
         std::cerr<<"This thread already has a EventLoop.\n";
         std::abort();
@@ -36,12 +37,24 @@ void EventLoop::loop() {
     assert(!looping_);
     assertInThread();
     looping_ = true;
-    for (int i = 0; i < 5; ++i) {
-        std::cout<<"process data\n";
+    quit_ = false;
+    while(!quit_){
+        activeChannels_.clear();
+        poller_->poll(1,activeChannels_);
+        for(auto beg = activeChannels_.begin();
+            beg != activeChannels_.end();beg++){
+            (*beg)->handleEvent();
+        }
     }
     looping_ = false;
 }
 
 EventLoop *EventLoop::getEventLoopOfCurrentThread() {
     return loopInThisThread;
+}
+
+void EventLoop::updateChannel(Channel *channel) {
+    assert(channel->ownerLoop() == this);
+    assertInThread();
+    poller_->updateChannel(channel);
 }

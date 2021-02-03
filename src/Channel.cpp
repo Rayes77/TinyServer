@@ -15,7 +15,7 @@ const int Channel::kWriteEvent = POLLOUT;
 const int Channel::kNoneEvent = 0;
 
 void Channel::update() {
-    loop_->updateChannel(this);
+    //loop_->updateChannel(this);
 }
 
 Channel::Channel(EventLoop* loop,int fd):
