@@ -14,6 +14,7 @@
 #include <atomic>
 #include <iostream>
 #include <assert.h>
+#include "Channel.h"
 
 class EventLoop {
 private:
@@ -26,8 +27,10 @@ public:
     EventLoop();
     ~EventLoop();
     void loop();
+    void updateChannel(Channel* channel);
 
     static EventLoop* getEventLoopOfCurrentThread();
+
 
     void assertInThread(){
         if (!isInLoopThread()){
