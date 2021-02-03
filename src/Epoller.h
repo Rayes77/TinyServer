@@ -1,33 +1,17 @@
 /*
 * @author:MutexCat
-* @date  :2021/2/2
+* @date  :2021/2/3
 * @github:https://github.com/MutexCat
 * @description:
 *
 */
 
-
 #ifndef TINYSERVER_EPOLLER_H
 #define TINYSERVER_EPOLLER_H
 
-#include <sys/epoll.h>
-#include <memory>
-#include <vector>
-#include <map>
-class Channel;
+
 class Epoller {
-private:
-    std::vector<struct epoll_event> events_;
-    std::map<int,Channel*> channelMap_;//map fd to channel.
 
-    int epollFd_;
-
-    void update(int ctl,Channel* channel);
-    void fillActiveChannels(int num,std::vector<Channel*>& activeChannel);
-public:
-    int wait(std::vector<Channel*>&);
-
-    void updateChannel(Channel*);
 };
 
 
