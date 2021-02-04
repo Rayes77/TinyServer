@@ -19,7 +19,8 @@ EventLoop::EventLoop():
             thisThreadId(std::this_thread::get_id()),
             looping_(false),
             quit_(false),
-            poller_(std::make_unique<Poller>(this)){
+            poller_(std::make_unique<Poller>(this)),
+            timerQueue_(NULL){
     if (loopInThisThread){
         std::cerr<<"This thread already has a EventLoop.\n";
         std::abort();
@@ -45,6 +46,7 @@ void EventLoop::loop() {
             beg != activeChannels_.end();beg++){
             (*beg)->handleEvent();
         }
+        doPendingFunctors();
     }
     looping_ = false;
 }
