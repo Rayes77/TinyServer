@@ -6,13 +6,14 @@
 *
 */
 
-#ifndef TINYSERVER_CHANNEL_H
-#define TINYSERVER_CHANNEL_H
+
+#ifndef TINYSERVER_SOCKET_H
+#define TINYSERVER_SOCKET_H
 
 
-class Channel {
+class Socket {
 
 };
 
 
-#endif //TINYSERVER_CHANNEL_H
+#endif //TINYSERVER_SOCKET_H

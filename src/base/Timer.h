@@ -6,6 +6,13 @@
 *
 */
 
+#ifndef TINYSERVER_TIMER_H
+#define TINYSERVER_TIMER_H
 
-#include "EventLoop.h"
 
+class Timer {
+
+};
+
+
+#endif //TINYSERVER_TIMER_H

@@ -6,13 +6,13 @@
 *
 */
 
-#ifndef TINYSERVER_CHANNEL_H
-#define TINYSERVER_CHANNEL_H
+#ifndef TINYSERVER_BUFFER_H
+#define TINYSERVER_BUFFER_H
 
 
-class Channel {
+class Buffer {
 
 };
 
 
-#endif //TINYSERVER_CHANNEL_H
+#endif //TINYSERVER_BUFFER_H

@@ -6,13 +6,14 @@
 *
 */
 
-#ifndef TINYSERVER_CHANNEL_H
-#define TINYSERVER_CHANNEL_H
+
+#ifndef TINYSERVER_HTTPCONN_H
+#define TINYSERVER_HTTPCONN_H
 
 
-class Channel {
+class HttpConn {
 
 };
 
 
-#endif //TINYSERVER_CHANNEL_H
+#endif //TINYSERVER_HTTPCONN_H

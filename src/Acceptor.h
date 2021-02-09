@@ -6,13 +6,14 @@
 *
 */
 
-#ifndef TINYSERVER_CHANNEL_H
-#define TINYSERVER_CHANNEL_H
+
+#ifndef TINYSERVER_ACCEPTOR_H
+#define TINYSERVER_ACCEPTOR_H
 
 
-class Channel {
+class Acceptor {
 
 };
 
 
-#endif //TINYSERVER_CHANNEL_H
+#endif //TINYSERVER_ACCEPTOR_H
