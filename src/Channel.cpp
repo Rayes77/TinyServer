@@ -9,3 +9,16 @@
 
 #include "Channel.h"
 
+Channel::Channel(EventLoop *loop,int fd)
+                :loop_(loop),
+                 fd_(fd){
+
+}
+
+Channel::~Channel() {
+
+}
+
+void Channel::handleEvent() {
+
+}
