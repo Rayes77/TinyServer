@@ -7,6 +7,13 @@
 */
 
 #include "../EventLoop.h"
+#include "../Channel.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/timerfd.h>
+
 EventLoop* g_loop = nullptr;
 
 void test1_func(){
@@ -36,8 +43,31 @@ void test2(){
     t.join();
 }
 
-int main(){
-    //test1();
-    //test2();
+
+void timeout()
+{
+    printf("Timeout!\n");
+    g_loop->quit();
 }
+
+int main()
+{
+    EventLoop loop;
+    g_loop = &loop;
+
+    int timerfd = ::timerfd_create(CLOCK_MONOTONIC, TFD_NONBLOCK | TFD_CLOEXEC);
+    Channel channel(&loop, timerfd);
+    channel.setReadCallBack(timeout);
+    channel.enableReading();
+
+    struct itimerspec howlong;
+    bzero(&howlong, sizeof howlong);
+    howlong.it_value.tv_sec = 5;
+    ::timerfd_settime(timerfd, 0, &howlong, NULL);
+
+    loop.loop();
+
+    close(timerfd);
+}
+
 

@@ -15,6 +15,7 @@ thread_local EventLoop* loopInThisThread = nullptr;
 void EventLoop::loop() {
     assertInLoopThread();
     isLooping_ = true;
+    isQuite_ = false;
     //process looping
 
     while (!isQuite_){
@@ -35,7 +36,6 @@ void EventLoop::updateChannel(Channel* channel) {
 
 EventLoop::EventLoop():thisThreadId_(std::this_thread::get_id()),
                        isLooping_(false),
-                       isQuite_(true),
                        epoller_(std::make_unique<Epoller>(this)){
     if (loopInThisThread){
         std::abort();
@@ -46,5 +46,9 @@ EventLoop::EventLoop():thisThreadId_(std::this_thread::get_id()),
 }
 
 EventLoop::~EventLoop() {
+    loopInThisThread = nullptr;
+}
 
+void EventLoop::quit() {
+    isQuite_ = true;
 }

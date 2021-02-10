@@ -24,11 +24,13 @@ class EventLoop : public nocopyable{
 public:
     using ThreadID = std::thread::id;
 
+    void quit();
     void loop();
     void updateChannel(Channel* channel);
 
     EventLoop();
     ~EventLoop();
+
 
     ThreadID thisThreadId_;
 private:

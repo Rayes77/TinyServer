@@ -9,10 +9,12 @@
 #include "Epoller.h"
 #include "Channel.h"
 #include <assert.h>
+#include <iostream>
 
 Epoller::Epoller(EventLoop* loop) :
         loop_(loop),
-        epfd_(epoll_create1(EPOLL_CLOEXEC)) {
+        epfd_(epoll_create1(EPOLL_CLOEXEC)),
+        resultEvent_(16){
 }
 
 
@@ -22,14 +24,14 @@ void Epoller::loop(std::vector<Channel*> &activeChannel, int &savedError) {
                          resultEvent_.size(),
                          -1);
     if (num > 0) {
-        auto beg = resultEvent_.begin();
-        while (beg != resultEvent_.end()){
+        for(auto beg = resultEvent_.begin();beg != resultEvent_.end() && num != 0;beg++){
+            --num;
             auto fd = beg->data.fd;
+            auto event = beg->events;
             auto iter = channels_.find(fd);
-            assert(iter != channels_.end());
             auto channel = iter->second;
-            channel->setRevent(beg->events);
             activeChannel.push_back(channel);
+            beg++;
         }
     } else {
         savedError = errno;
@@ -39,7 +41,7 @@ void Epoller::loop(std::vector<Channel*> &activeChannel, int &savedError) {
 //update epoll's concern channel(add a new one or modify an exist one).
 void Epoller::updateChannel(Channel* channel) {
     auto isInEpoll = channel->isInEpoll();
-    if (isInEpoll) {//add a new channel into epoll.
+    if (!isInEpoll) {//add a new channel into epoll.
         int fd = channel->getFd();
         channels_[fd] = channel;
         struct epoll_event event;

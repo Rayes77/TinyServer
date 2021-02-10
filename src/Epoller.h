@@ -12,11 +12,12 @@
 #include <memory>
 #include <vector>
 #include <map>
+#include "base/nocopyable.h"
 
 class Channel;
 class EventLoop;
 
-class Epoller {
+class Epoller : public nocopyable {
 public:
     void loop(std::vector<Channel*> &activeChannel,int& error);
 
