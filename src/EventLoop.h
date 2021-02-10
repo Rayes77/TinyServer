@@ -12,6 +12,7 @@
 
 #include <memory>
 #include <thread>
+#include <vector>
 #include <assert.h>
 #include <iostream>
 #include "base/nocopyable.h"
@@ -24,7 +25,7 @@ public:
     using ThreadID = std::thread::id;
 
     void loop();
-    void updateChannel(std::shared_ptr<Channel> channelSP);
+    void updateChannel(Channel* channel);
 
     EventLoop();
     ~EventLoop();
@@ -33,6 +34,8 @@ public:
 private:
     bool isLooping_;
     bool isQuite_;
+    int savedError_;
+    std::vector<Channel*> resultChannel_;
     std::unique_ptr<Epoller> epoller_;
 
     void assertInLoopThread() const {

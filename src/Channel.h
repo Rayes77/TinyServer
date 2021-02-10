@@ -11,11 +11,12 @@
 #include <memory>
 #include <sys/epoll.h>
 #include <functional>
+#include "base/nocopyable.h"
 class EventLoop;
 
 using CallBack = std::function<void()>;
 
-class Channel {
+class Channel : public nocopyable{
 public:
     Channel(EventLoop* loop,int fd);
     ~Channel();
@@ -27,22 +28,25 @@ public:
     void setInEpollState(bool tf){isInEpoll_ = tf;}
     void enableReading(){
         event_ |=EPOLLIN;
-        //
+        update();
     }
 
-
+    void setErrorCallBack(CallBack cb){errorCallBack = cb;}
     void setReadCallBack(CallBack cb){readCallBack = cb;}
     void setWriteCallBack(CallBack cb){writeCallBack = cb;}
     void handleEvent();
 private:
     int fd_;
-    std::shared_ptr<EventLoop> loop_;
+    EventLoop* loop_;
     int event_;
     int revent_;
     bool isInEpoll_;
 
+    CallBack errorCallBack;
     CallBack readCallBack;
     CallBack writeCallBack;
+
+    void update();
 
 };
 

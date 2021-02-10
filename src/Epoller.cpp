@@ -10,20 +10,13 @@
 #include "Channel.h"
 #include <assert.h>
 
-Epoller::Epoller(EventLoop *loop) :
+Epoller::Epoller(EventLoop* loop) :
         loop_(loop),
         epfd_(epoll_create1(EPOLL_CLOEXEC)) {
 }
 
-void Epoller::addToEpoll(std::shared_ptr<Channel> channel) {
 
-}
-
-void Epoller::modifyEpoll(std::shared_ptr<Channel> channel) {
-
-}
-
-void Epoller::loop(std::vector<std::shared_ptr<Channel>> &activeChannel, int &savedError) {
+void Epoller::loop(std::vector<Channel*> &activeChannel, int &savedError) {
     int num = epoll_wait(epfd_,
                          resultEvent_.data(),
                          resultEvent_.size(),
@@ -35,6 +28,7 @@ void Epoller::loop(std::vector<std::shared_ptr<Channel>> &activeChannel, int &sa
             auto iter = channels_.find(fd);
             assert(iter != channels_.end());
             auto channel = iter->second;
+            channel->setRevent(beg->events);
             activeChannel.push_back(channel);
         }
     } else {
@@ -43,7 +37,7 @@ void Epoller::loop(std::vector<std::shared_ptr<Channel>> &activeChannel, int &sa
 }
 
 //update epoll's concern channel(add a new one or modify an exist one).
-void Epoller::updateChannel(std::shared_ptr<Channel> channel) {
+void Epoller::updateChannel(Channel* channel) {
     auto isInEpoll = channel->isInEpoll();
     if (isInEpoll) {//add a new channel into epoll.
         int fd = channel->getFd();

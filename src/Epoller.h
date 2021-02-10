@@ -18,19 +18,19 @@ class EventLoop;
 
 class Epoller {
 public:
-    void loop(std::vector<std::shared_ptr<Channel>>& activeChannel,int& error);
+    void loop(std::vector<Channel*> &activeChannel,int& error);
 
-    void addToEpoll(std::shared_ptr<Channel> channel);
-    void modifyEpoll(std::shared_ptr<Channel> channel);
-    void updateChannel(std::shared_ptr<Channel> channel);
-private:
-    int epfd_;
-    std::shared_ptr<EventLoop> loop_;
-
-    std::map<int,std::shared_ptr<Channel>> channels_;
-    std::vector<epoll_event> resultEvent_;
+    void updateChannel(Channel* channel);
 
     Epoller(EventLoop* loop);
+
+private:
+    int epfd_;
+    EventLoop* loop_;
+
+    std::map<int,Channel*> channels_;
+    std::vector<epoll_event> resultEvent_;
+
 };
 
 

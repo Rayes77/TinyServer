@@ -18,19 +18,25 @@ void EventLoop::loop() {
     //process looping
 
     while (!isQuite_){
-
+        resultChannel_.clear();
+        epoller_->loop(resultChannel_,savedError_);
+        for(auto beg = resultChannel_.begin();
+            beg != resultChannel_.end();beg++){
+            (*beg)->handleEvent();
+        }
     }
 
     isLooping_ = false;
 }
 
-void EventLoop::updateChannel(std::shared_ptr<Channel> channelSP) {
-
+void EventLoop::updateChannel(Channel* channel) {
+    epoller_->updateChannel(channel);
 }
 
 EventLoop::EventLoop():thisThreadId_(std::this_thread::get_id()),
                        isLooping_(false),
-                       isQuite_(true){
+                       isQuite_(true),
+                       epoller_(std::make_unique<Epoller>(this)){
     if (loopInThisThread){
         std::abort();
     }else {
