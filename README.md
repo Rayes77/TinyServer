@@ -3,14 +3,8 @@ This is a TinyServer based on UNIX API written while i'm learning network progra
 
 ## Refreence:
 
-[muduo](https://github.com/chenshuo/muduo)
+[《muduo》](https://github.com/chenshuo/muduo)
 
-[Zaver](https://github.com/MutexCat/zaver)
+[《linux高性能服务器编程》]()
 
-[TinyWebServer](https://github.com/qinguoyi/TinyWebServer)
-
-[WebServer](https://github.com/linyacool/WebServer)
-
-《linux高性能服务器编程》
-
-《linux多线程服务端编程》
+[《linux多线程服务端编程》]()
