@@ -50,8 +50,7 @@ void timeout()
     g_loop->quit();
 }
 
-int main()
-{
+void test3(){
     EventLoop loop;
     g_loop = &loop;
 
@@ -68,6 +67,24 @@ int main()
     loop.loop();
 
     close(timerfd);
+}
+
+void run(){
+    std::cout<<"thread id :"<<std::this_thread::get_id()<< " run is called "<<std::endl;
+}
+
+void thread_func_run(){
+    std::cout<<"thread id :"<<std::this_thread::get_id()<<" is calling run"<<std::endl;
+    g_loop->runInLoop(run);
+}
+
+int main()
+{
+    EventLoop loop;
+    g_loop = &loop;
+    std::thread thread(thread_func_run);
+    loop.loop();
+    thread.join();
 }
 
 
