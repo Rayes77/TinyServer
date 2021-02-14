@@ -21,6 +21,8 @@ public:
     void setNewConnCallBack(connectionCallBack cb){
         newConnCallBack = cb;
     }
+    bool isListening(){return isListening_;}
+    void listen();
 private:
     //int listenfd;
     EventLoop* loop_;
@@ -29,6 +31,7 @@ private:
     Channel acceptChannel_;
     connectionCallBack newConnCallBack;
     void handleRead();
+
 };
 
 

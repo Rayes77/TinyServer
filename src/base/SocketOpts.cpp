@@ -19,6 +19,7 @@ int createNonblockingOrDie(){
 
 void bindOrDie(int fd,const struct sockaddr_in& addr){
     int ret = ::bind(fd,(struct sockaddr*)&addr,sizeof(addr));
+    //
     if (ret < 0){
         std::cerr<<"bindOrDie error\n";
         std::abort();

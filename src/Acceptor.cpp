@@ -8,11 +8,9 @@
 
 
 #include "Acceptor.h"
+#include "EventLoop.h"
 #include "base/SocketOpts.h"
 
-void Acceptor::handleRead() {
-
-}
 
 Acceptor::Acceptor(EventLoop *loop, const InetAddress &addr):
                    loop_(loop),
@@ -22,4 +20,20 @@ Acceptor::Acceptor(EventLoop *loop, const InetAddress &addr):
     acceptSocket_.bindAddress(addr);
     acceptSocket_.setReuseAddr(true);
     acceptChannel_.setReadCallBack(std::bind(&Acceptor::handleRead,this));
+}
+
+void Acceptor::listen() {
+    isListening_ = true;
+    acceptSocket_.listen();
+    acceptChannel_.enableReading();
+}
+
+void Acceptor::handleRead() {
+    InetAddress addr(0);
+    int fd = acceptSocket_.accept(&addr);
+    if (fd >= 0){
+        newConnCallBack(fd,addr);
+    }else{
+        close(fd);
+    }
 }

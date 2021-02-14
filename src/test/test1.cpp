@@ -13,7 +13,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/timerfd.h>
-
+#include "../Acceptor.h"
 EventLoop* g_loop = nullptr;
 
 void test1_func(){
@@ -78,13 +78,32 @@ void thread_func_run(){
     g_loop->runInLoop(run);
 }
 
-int main()
-{
+void test4(){
     EventLoop loop;
     g_loop = &loop;
     std::thread thread(thread_func_run);
     loop.loop();
     thread.join();
+}
+
+void newConn(int fd,const InetAddress& addr){
+    std::cout<<"accept a new connection.\n";
+    write(fd,"Hello",6);
+    close(fd);
+}
+void test5(){
+    InetAddress addr(9999);
+    EventLoop loop;
+    Acceptor acceptor(&loop,addr);
+    acceptor.setNewConnCallBack(newConn);
+    acceptor.listen();
+
+    loop.loop();
+}
+
+int main()
+{
+    test5();
 }
 
 
