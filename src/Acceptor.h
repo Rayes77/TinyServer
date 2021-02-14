@@ -9,10 +9,26 @@
 
 #ifndef TINYSERVER_ACCEPTOR_H
 #define TINYSERVER_ACCEPTOR_H
+#include "Channel.h"
+#include "base/InetAddr.h"
+#include "base/Socket.h"
 
-
+class EventLoop;
 class Acceptor {
-
+using connectionCallBack = std::function<void(int,const InetAddress&)>;
+public:
+    Acceptor(EventLoop* loop,const InetAddress& addr);
+    void setNewConnCallBack(connectionCallBack cb){
+        newConnCallBack = cb;
+    }
+private:
+    //int listenfd;
+    EventLoop* loop_;
+    bool isListening_;
+    Socket acceptSocket_;
+    Channel acceptChannel_;
+    connectionCallBack newConnCallBack;
+    void handleRead();
 };
 
 
